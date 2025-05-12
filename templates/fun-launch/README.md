@@ -7,14 +7,14 @@ A platform for launching tokens with customizable price curves.
 1. Clone the repository
 
 ```bash
-git clone https://github.com/jup-ag/fun-launch.git
-cd fun-launch
+git clone https://github.com/MeteoraAg/meteora-scaffold.git
+cd templates/fun-launch
 ```
 
 2. Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. Set up environment variables
@@ -61,7 +61,7 @@ The pool config key is used to configure the bonding curve parameters. You'll ne
 4. Run the development server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ## Features
