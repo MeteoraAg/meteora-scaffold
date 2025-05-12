@@ -1,0 +1,12 @@
+@keyframes flash {
+  from {
+    background-color: rgba(199, 242, 132, 0.5);
+  }
+  to {
+    background-color: inherit;
+  }
+}
+
+.flashBg {
+  animation: flash 1s ease-out forwards;
+}
