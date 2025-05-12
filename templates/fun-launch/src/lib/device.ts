@@ -2,6 +2,7 @@ import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { useEffect } from 'react';
 
 export function isHoverableDevice(): boolean {
+  if (typeof window === 'undefined') return false;
   return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 }
 
@@ -15,10 +16,8 @@ const SORTED_BREAKPOINTS = Object.entries(BREAKPOINTS).sort((a, b) => b[1] - a[1
   number,
 ][];
 
-/**
- * The current window width
- */
-const windowWidthAtom = atom(typeof window !== 'undefined' ? window.innerWidth : 0);
+// Start with a default value of 0 for both server and client to avoid hydration mismatch
+const windowWidthAtom = atom(0);
 
 /**
  * The current breakpoint
@@ -43,7 +42,7 @@ export function useWindowWidthListener(): void {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Update initial width
+    // Update initial width - only after the component is mounted on the client
     setWindowWidth(window.innerWidth);
 
     const handleResize = () => {
