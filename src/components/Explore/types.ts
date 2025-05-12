@@ -1,52 +1,16 @@
 import * as z from 'superstruct';
 
-export const UniqueTokenListTab = {
-  WATCHLIST: 'watchlist',
-} as const;
-export type UniqueTokenListTab = (typeof UniqueTokenListTab)[keyof typeof UniqueTokenListTab];
-
 export const ExploreTab = {
-  HUNT: 'alphascan',
-  TOP_OVERVIEW: 'top/overview',
-  TOP_TRADED: 'toptraded',
-  TOP_ORGANIC: 'toporganicscore',
-  TOP_TRENDING: 'toptrending',
-  POPULAR: 'popular',
-} as const;
-export type ExploreTab = (typeof ExploreTab)[keyof typeof ExploreTab];
-
-export const HuntTab = {
   NEW: 'recent',
   GRADUATING: 'aboutToGraduate',
   GRADUATED: 'graduated',
 } as const;
-export type HuntTab = (typeof HuntTab)[keyof typeof HuntTab];
-
-export const TopTab = {
-  TOP_TRADED: 'toptraded',
-  POPULAR: 'popular',
-  TOP_GAINER: 'topgainer',
-} as const;
-export type TopTab = (typeof TopTab)[keyof typeof TopTab];
+export type ExploreTab = (typeof ExploreTab)[keyof typeof ExploreTab];
 
 export const TokenListTab = {
-  ...UniqueTokenListTab,
   ...ExploreTab,
-  ...HuntTab,
-  ...TopTab,
 } as const;
 export type TokenListTab = (typeof TokenListTab)[keyof typeof TokenListTab];
-
-export type CategoryTokenList =
-  | typeof ExploreTab.TOP_ORGANIC
-  | typeof ExploreTab.TOP_OVERVIEW
-  | typeof ExploreTab.TOP_TRENDING
-  | typeof ExploreTab.POPULAR
-  | typeof TopTab.TOP_TRADED
-  | typeof TopTab.POPULAR
-  | typeof TopTab.TOP_GAINER;
-
-export type CategoryTokenListInterval = '5m' | '1h' | '6h' | '24h';
 
 export type GetTokenRequest = {
   id: string;
@@ -192,10 +156,12 @@ export type GetCategoryTokenListResponse = {
   pools: Pool[];
 };
 
-export type GetTopOverviewTokenListResponse = Record<TopTab, Pool[]>;
-
-export type GetGemsTokenListRequest = Partial<Record<HuntTab, GetGemsTokenListIndividualRequest>>;
-export type GetGemsTokenListResponse = Partial<Record<HuntTab, GetGemsTokenListIndividualResponse>>;
+export type GetGemsTokenListRequest = Partial<
+  Record<ExploreTab, GetGemsTokenListIndividualRequest>
+>;
+export type GetGemsTokenListResponse = Partial<
+  Record<ExploreTab, GetGemsTokenListIndividualResponse>
+>;
 
 export type GetGemsTokenListIndividualRequest = ResolvedTokenListFilters & {
   timeframe: TokenListTimeframe;

@@ -7,7 +7,7 @@ import {
 } from '@/components/Explore/pool-utils';
 import { ApeQueries, QueryData } from '@/components/Explore/queries';
 import { useDataStreamListener } from '@/contexts/DataStreamProvider';
-import { HuntTab, TokenListSortByField, normalizeSortByField } from '@/components/Explore/types';
+import { ExploreTab, TokenListSortByField, normalizeSortByField } from '@/components/Explore/types';
 import { assertNever } from '@/lib/utils';
 
 export const ExploreMsgHandler: React.FC = () => {
@@ -157,19 +157,19 @@ export const ExploreMsgHandler: React.FC = () => {
             continue;
           }
 
-          assertNever(update.type, 'Hunt stream listener received unknown update type');
+          assertNever(update.type, 'Explore stream listener received unknown update type');
         }
 
-        const recentArgs = prev.args[HuntTab.NEW];
-        const aboutToGraduateArgs = prev.args[HuntTab.GRADUATING];
-        const graduatedArgs = prev.args[HuntTab.GRADUATED];
+        const recentArgs = prev.args[ExploreTab.NEW];
+        const aboutToGraduateArgs = prev.args[ExploreTab.GRADUATING];
+        const graduatedArgs = prev.args[ExploreTab.GRADUATED];
 
         // Re-sort
         if (recentPools && recentArgs) {
-          const sortDir = categorySortDir(HuntTab.NEW);
+          const sortDir = categorySortDir(ExploreTab.NEW);
           let sortBy: TokenListSortByField | undefined;
           if (!sortBy) {
-            const defaultSortBy = categorySortBy(HuntTab.NEW, recentArgs.timeframe);
+            const defaultSortBy = categorySortBy(ExploreTab.NEW, recentArgs.timeframe);
             if (defaultSortBy) {
               sortBy = normalizeSortByField(defaultSortBy);
             }
@@ -188,10 +188,13 @@ export const ExploreMsgHandler: React.FC = () => {
         }
 
         if (aboutToGraduatePools && aboutToGraduateArgs) {
-          const sortDir = categorySortDir(HuntTab.GRADUATING);
+          const sortDir = categorySortDir(ExploreTab.GRADUATING);
           let sortBy: TokenListSortByField | undefined;
           if (!sortBy) {
-            const defaultSortBy = categorySortBy(HuntTab.GRADUATING, aboutToGraduateArgs.timeframe);
+            const defaultSortBy = categorySortBy(
+              ExploreTab.GRADUATING,
+              aboutToGraduateArgs.timeframe
+            );
             if (defaultSortBy) {
               sortBy = normalizeSortByField(defaultSortBy);
             }
@@ -210,10 +213,10 @@ export const ExploreMsgHandler: React.FC = () => {
         }
 
         if (graduatedPools && graduatedArgs) {
-          const sortDir = categorySortDir(HuntTab.GRADUATED);
+          const sortDir = categorySortDir(ExploreTab.GRADUATED);
           let sortBy: TokenListSortByField | undefined;
           if (!sortBy) {
-            const defaultSortBy = categorySortBy(HuntTab.GRADUATED, graduatedArgs.timeframe);
+            const defaultSortBy = categorySortBy(ExploreTab.GRADUATED, graduatedArgs.timeframe);
             if (defaultSortBy) {
               sortBy = normalizeSortByField(defaultSortBy);
             }
@@ -237,9 +240,11 @@ export const ExploreMsgHandler: React.FC = () => {
         graduatedPools?.splice(30);
 
         const next: QueryData<typeof ApeQueries.gemsTokenList> = {
-          [HuntTab.NEW]: recentPools ? { pools: recentPools } : undefined,
-          [HuntTab.GRADUATING]: aboutToGraduatePools ? { pools: aboutToGraduatePools } : undefined,
-          [HuntTab.GRADUATED]: graduatedPools ? { pools: graduatedPools } : undefined,
+          [ExploreTab.NEW]: recentPools ? { pools: recentPools } : undefined,
+          [ExploreTab.GRADUATING]: aboutToGraduatePools
+            ? { pools: aboutToGraduatePools }
+            : undefined,
+          [ExploreTab.GRADUATED]: graduatedPools ? { pools: graduatedPools } : undefined,
           args: prev.args,
         };
 

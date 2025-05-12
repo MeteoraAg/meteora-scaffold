@@ -1,12 +1,10 @@
 import { ApeClient } from '@/components/Explore/client';
 import {
-  CategoryTokenList,
   GetGemsTokenListRequest,
   GetTxsResponse,
   ResolvedTokenListFilters,
   TokenListFilters,
   TokenListSortBy,
-  TokenListSortByField,
   TokenListSortDir,
   TokenListTimeframe,
   resolveTokenListFilters,
@@ -17,22 +15,6 @@ export type QueryData<T> = T extends (...args: infer OptionsArgs) => {
 }
   ? R
   : never;
-
-export type RecentTokenListQueryArgs = {
-  createdAt: Date;
-  sortBy: TokenListSortBy;
-  sortDir: TokenListSortDir;
-  timeframe: TokenListTimeframe;
-  filters?: ResolvedTokenListFilters;
-};
-
-export type TokenListQueryArgs = {
-  category: CategoryTokenList;
-  timeframe: TokenListTimeframe;
-  sortBy?: TokenListSortByField;
-  sortDir?: TokenListSortDir;
-  filters?: TokenListFilters;
-};
 
 export type GemsTokenListQueryArgs = {
   [list in keyof GetGemsTokenListRequest]: {

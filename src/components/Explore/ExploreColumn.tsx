@@ -2,22 +2,22 @@ import { useQueryClient } from '@tanstack/react-query';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { categorySortBy, categorySortDir, createPoolSorter } from '@/components/Explore/pool-utils';
 import { ApeQueries, GemsTokenListQueryArgs, QueryData } from '@/components/Explore/queries';
-import { HuntTab, TokenListSortByField, normalizeSortByField } from '@/components/Explore/types';
+import { ExploreTab, TokenListSortByField, normalizeSortByField } from '@/components/Explore/types';
 import { TokenCardList } from '@/components/TokenCard/TokenCardList';
 import { useExploreGemsTokenList } from '@/hooks/useExploreGemsTokenList';
-import { HUNT_FIXED_TIMEFRAME, useExplore } from '@/contexts/ExploreProvider';
+import { EXPLORE_FIXED_TIMEFRAME, useExplore } from '@/contexts/ExploreProvider';
 import { Pool } from '@/contexts/types';
 import { isHoverableDevice, useBreakpoint } from '@/lib/device';
 import { PausedIndicator } from './PausedIndicator';
 
 type ExploreColumnProps = {
-  tab: HuntTab;
+  tab: ExploreTab;
 };
 
-export const HuntTabTitleMap: Record<HuntTab, string> = {
-  [HuntTab.NEW]: `New`,
-  [HuntTab.GRADUATING]: `Soon`,
-  [HuntTab.GRADUATED]: `Bonded`,
+export const ExploreTabTitleMap: Record<ExploreTab, string> = {
+  [ExploreTab.NEW]: `New`,
+  [ExploreTab.GRADUATING]: `Soon`,
+  [ExploreTab.GRADUATED]: `Bonded`,
 };
 
 export const ExploreColumn: React.FC<ExploreColumnProps> = ({ tab }) => {
@@ -33,7 +33,7 @@ export const ExploreColumn: React.FC<ExploreColumnProps> = ({ tab }) => {
       {/* Desktop Column Header */}
       <div className="flex items-center justify-between p-3 max-lg:hidden">
         <div className="flex items-center gap-x-2">
-          <h2 className="font-bold text-neutral-300">{HuntTabTitleMap[tab]}</h2>
+          <h2 className="font-bold text-neutral-300">{ExploreTabTitleMap[tab]}</h2>
           {isPaused && <PausedIndicator />}
         </div>
       </div>
@@ -53,13 +53,13 @@ export const ExploreColumn: React.FC<ExploreColumnProps> = ({ tab }) => {
 };
 
 type TokenCardListContainerProps = {
-  tab: HuntTab;
+  tab: ExploreTab;
   request: Required<GemsTokenListQueryArgs>;
   isPaused: boolean;
   setIsPaused: (isPaused: boolean) => void;
 };
 
-const timeframe = HUNT_FIXED_TIMEFRAME;
+const timeframe = EXPLORE_FIXED_TIMEFRAME;
 
 const TokenCardListContainer: React.FC<TokenCardListContainerProps> = memo(
   ({ tab, request, isPaused, setIsPaused }) => {

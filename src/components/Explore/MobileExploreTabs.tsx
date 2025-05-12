@@ -1,17 +1,17 @@
 import React from 'react';
 import { ToggleGroup as ToggleGroupPrimitive } from 'radix-ui';
 import { useExplore } from '@/contexts/ExploreProvider';
-import { HuntTab } from './types';
+import { ExploreTab } from './types';
 import { PausedIndicator } from './PausedIndicator';
 import { cn } from '@/lib/utils';
 
-export const HuntTabTitleMap: Record<HuntTab, string> = {
-  [HuntTab.NEW]: `New`,
-  [HuntTab.GRADUATING]: `Soon`,
-  [HuntTab.GRADUATED]: `Bonded`,
+export const ExploreTabTitleMap: Record<ExploreTab, string> = {
+  [ExploreTab.NEW]: `New`,
+  [ExploreTab.GRADUATING]: `Soon`,
+  [ExploreTab.GRADUATED]: `Bonded`,
 };
 
-export const MobileHuntTabs = () => {
+export const MobileExploreTabs = () => {
   const { mobileTab, setMobileTab, pausedTabs } = useExplore();
   return (
     <div className="sticky inset-x-0 top-0 z-20 border-b border-neutral-850 shadow-md shadow-neutral-950 lg:hidden bg-black">
@@ -22,27 +22,26 @@ export const MobileHuntTabs = () => {
           value={mobileTab}
           onValueChange={(value) => {
             if (value) {
-              setMobileTab(value as HuntTab);
+              setMobileTab(value as ExploreTab);
             }
           }}
         >
-          <ToggleGroupItem value={HuntTab.NEW}>
-            {HuntTabTitleMap[HuntTab.NEW]}
-            {mobileTab === HuntTab.NEW && pausedTabs[HuntTab.NEW] && <PausedIndicator />}
+          <ToggleGroupItem value={ExploreTab.NEW}>
+            {ExploreTabTitleMap[ExploreTab.NEW]}
+            {mobileTab === ExploreTab.NEW && pausedTabs[ExploreTab.NEW] && <PausedIndicator />}
           </ToggleGroupItem>
-          <ToggleGroupItem value={HuntTab.GRADUATING}>
-            {HuntTabTitleMap[HuntTab.GRADUATING]}
-            {mobileTab === HuntTab.GRADUATING && pausedTabs[HuntTab.GRADUATING] && (
+          <ToggleGroupItem value={ExploreTab.GRADUATING}>
+            {ExploreTabTitleMap[ExploreTab.GRADUATING]}
+            {mobileTab === ExploreTab.GRADUATING && pausedTabs[ExploreTab.GRADUATING] && (
               <PausedIndicator />
             )}
           </ToggleGroupItem>
-          <ToggleGroupItem value={HuntTab.GRADUATED}>
-            {HuntTabTitleMap[HuntTab.GRADUATED]}
-            {mobileTab === HuntTab.GRADUATED && pausedTabs[HuntTab.GRADUATED] && (
+          <ToggleGroupItem value={ExploreTab.GRADUATED}>
+            {ExploreTabTitleMap[ExploreTab.GRADUATED]}
+            {mobileTab === ExploreTab.GRADUATED && pausedTabs[ExploreTab.GRADUATED] && (
               <PausedIndicator />
             )}
           </ToggleGroupItem>
-          {/* <MobileHuntFiltersControl /> */}
         </ToggleGroupPrimitive.Root>
       </div>
     </div>

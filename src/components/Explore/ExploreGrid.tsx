@@ -1,9 +1,9 @@
 import { useDataStream } from '@/contexts/DataStreamProvider';
 import { useEffect } from 'react';
-import { HuntTab } from './types';
+import { ExploreTab } from './types';
 import { ExploreColumn } from './ExploreColumn';
 import { cn } from '@/lib/utils';
-import { MobileHuntTabs } from './MobileExploreTabs';
+import { MobileExploreTabs } from './MobileExploreTabs';
 import { useExplore } from '@/contexts/ExploreProvider';
 import { useBreakpoint } from '@/lib/device';
 
@@ -32,12 +32,12 @@ const ExploreGrid = ({ className }: ExploreGridProps) => {
         className
       )}
     >
-      <MobileHuntTabs />
+      <MobileExploreTabs />
 
       <div className="contents divide-x divide-neutral-850">
-        <ExploreColumn tab={isMobile ? mobileTab : HuntTab.NEW} />
-        {!isMobile && <ExploreColumn tab={HuntTab.GRADUATING} />}
-        {!isMobile && <ExploreColumn tab={HuntTab.GRADUATED} />}
+        <ExploreColumn tab={isMobile ? mobileTab : ExploreTab.NEW} />
+        {!isMobile && <ExploreColumn tab={ExploreTab.GRADUATING} />}
+        {!isMobile && <ExploreColumn tab={ExploreTab.GRADUATED} />}
       </div>
     </div>
   );

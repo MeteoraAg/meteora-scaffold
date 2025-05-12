@@ -135,27 +135,11 @@ export function categorySortBy(
 ): TokenListSortBy | undefined {
   switch (category) {
     case TokenListTab.NEW:
-    case TokenListTab.HUNT:
       return 'listedTime';
-    case TokenListTab.TOP_TRENDING:
-      // this is special
-      return `netVolume${timeframe}`;
-    case TokenListTab.TOP_OVERVIEW:
-      return `volume${timeframe}`;
-    case TokenListTab.TOP_ORGANIC:
-      return `numOrganicBuyers${timeframe}`;
-    case TokenListTab.POPULAR:
-      return 'ctLikes';
-    case TokenListTab.WATCHLIST:
-      return;
     case TokenListTab.GRADUATING:
       return `bondingCurve`;
     case TokenListTab.GRADUATED:
       return 'graduatedAt';
-    case TokenListTab.TOP_TRADED:
-      return `volume${timeframe}`;
-    case TokenListTab.TOP_GAINER:
-      return `priceChange${timeframe}`;
     default:
       assertNever(category);
   }
