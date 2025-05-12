@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.ts": "typescript",
+    "*.tsx": "typescriptreact",
+    "*.js": "javascript",
+    "*.jsx": "javascriptreact",
+    "*.mjs": "javascript",
+    "*.cjs": "javascript",
+    "README.md": "markdown",
+    "*.md": "markdown",
+    ".env.example": "dotenv"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+} 

@@ -1,0 +1,25 @@
+{
+    "name": "meteora-scaffold",
+    "devDependencies": {
+        "prettier": "^3.5.3",
+        "turbo": "^2.5.0",
+        "typescript": "5.8.2"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "packageManager": "bun@1.2.8",
+    "private": true,
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "link": "turbo run link",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "check-types": "turbo run check-types"
+    },
+    "workspaces": [
+        "scripts/*",
+        "templates/*"
+    ]
+}
