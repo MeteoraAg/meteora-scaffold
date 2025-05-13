@@ -26,5 +26,5 @@ pnpm install
 
 ```bash
 pnpm run <file-name>
-# e.g. npm run create-config
+# e.g. pnpm run create-config
 ```
