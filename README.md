@@ -64,6 +64,55 @@ The pool config key is used to configure the bonding curve parameters. You'll ne
 npm run dev
 ```
 
+## Deployment
+
+### Deploying to Vercel
+
+1. Push your code to a GitHub repository
+
+2. Go to [Vercel](https://vercel.com) and sign in with your GitHub account
+
+3. Click "New Project"
+
+4. Import your GitHub repository
+
+5. Configure your project:
+
+   - Framework Preset: Next.js
+   - Root Directory: ./
+   - Build Command: `npm run build`
+   - Output Directory: .next
+
+6. Add Environment Variables:
+
+   - Add all the environment variables from your `.env` file:
+     - `R2_ACCESS_KEY_ID`
+     - `R2_SECRET_ACCESS_KEY`
+     - `R2_ACCOUNT_ID`
+     - `R2_BUCKET`
+     - `RPC_URL`
+     - `POOL_CONFIG_KEY`
+
+7. Click "Deploy"
+
+8. Vercel will automatically deploy your site and provide you with a URL
+
+### Environment Variables in Vercel
+
+You can manage your environment variables in Vercel:
+
+1. Go to your project settings
+2. Click on "Environment Variables"
+3. Add each variable from your `.env` file
+4. You can set different values for Production, Preview, and Development environments
+
+### Custom Domain (Optional)
+
+1. Go to your project settings in Vercel
+2. Click on "Domains"
+3. Add your custom domain
+4. Follow Vercel's instructions to configure your DNS settings
+
 ## Features
 
 - Create token pools with customizable price curves
