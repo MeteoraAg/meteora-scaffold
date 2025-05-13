@@ -4,12 +4,13 @@
     "main": "index.js",
     "scripts": {
         "create-config": "tsx src/create-config.ts",
-        "create-pool": "tsx src/create-pool.ts"
+        "create-pool": "tsx src/create-pool.ts",
+        "create-partner-metadata": "tsx src/create-partner-metadata.ts"
     },
     "keywords": [],
     "author": "@dannweeeee",
     "license": "ISC",
-    "description": "",
+    "description": "This folder contains examples for interacting with Meteora's Dynamic Bonding Curve.",
     "dependencies": {
         "@coral-xyz/anchor": "^0.31.1",
         "@meteora-ag/dynamic-bonding-curve-sdk": "^1.1.4",
@@ -20,5 +21,6 @@
     "devDependencies": {
         "@types/bn.js": "^5.1.6",
         "tsx": "^4.19.3"
-    }
+    },
+    "type": "commonjs"
 }

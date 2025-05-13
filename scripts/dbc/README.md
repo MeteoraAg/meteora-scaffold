@@ -10,17 +10,21 @@ This folder contains examples for interacting with Meteora's Dynamic Bonding Cur
 
 - [Create a DBC Pool](./src/create-pool.ts)
 
+## Create Partner Metadata (to be indexed by integrators)
+
+- [Create Partner Metadata](./src/create-partner-metadata.ts)
+
 ## Getting Started
 
 ### Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Run the examples
 
 ```bash
-npm run <file-name>
+pnpm run <file-name>
 # e.g. npm run create-config
 ```
