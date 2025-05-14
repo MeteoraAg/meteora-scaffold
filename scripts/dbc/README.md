@@ -14,6 +14,10 @@ This folder contains examples for interacting with Meteora's Dynamic Bonding Cur
 
 - [Create Partner Metadata](./src/create-partner-metadata.ts)
 
+## Swap Buy
+
+- [Swap Buy](./src/swap-buy.ts)
+
 ## Getting Started
 
 ### Install dependencies
