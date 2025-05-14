@@ -1,126 +1,76 @@
 import {
   Connection,
   Keypair,
+  PublicKey,
   sendAndConfirmTransaction,
-} from "@solana/web3.js";
-import {
-  DynamicBondingCurveClient,
-  CollectFeeMode,
-  TokenType,
-  ActivationType,
-  MigrationOption,
-  FeeSchedulerMode,
-  MigrationFeeOption,
-  TokenDecimal,
-} from "@meteora-ag/dynamic-bonding-curve-sdk";
-import { NATIVE_MINT } from "@solana/spl-token";
-import BN from "bn.js";
-import bs58 from "bs58";
+} from '@solana/web3.js'
+import { DynamicBondingCurveClient, TokenType } from '@meteora-ag/dynamic-bonding-curve-sdk'
+import { NATIVE_MINT } from '@solana/spl-token'
+import bs58 from 'bs58'
 
-async function createConfig() {
+async function createPool() {
   const PAYER_PRIVATE_KEY = "";
   const payerSecretKey = bs58.decode(PAYER_PRIVATE_KEY);
   const payer = Keypair.fromSecretKey(payerSecretKey);
   console.log("Payer public key:", payer.publicKey.toBase58());
 
-  const OWNER_PRIVATE_KEY = "";
-  const ownerSecretKey = bs58.decode(OWNER_PRIVATE_KEY);
-  const owner = Keypair.fromSecretKey(ownerSecretKey);
-  console.log("Owner public key:", owner.publicKey.toBase58());
+  const POOL_CREATOR_PRIVATE_KEY = "";
+  const poolCreatorSecretKey = bs58.decode(POOL_CREATOR_PRIVATE_KEY);
+  const poolCreator = Keypair.fromSecretKey(poolCreatorSecretKey);
+  console.log("Pool creator public key:", poolCreator.publicKey.toBase58());
 
   const connection = new Connection(
-    "https://api.mainnet-beta.solana.com",
-    "confirmed"
-  );
+      'https://api.mainnet-beta.solana.com',
+      'confirmed'
+  )
 
-  const config = Keypair.generate();
-  console.log(`Config account: ${config.publicKey.toString()}`);
-
-  const feeClaimer = owner.publicKey;
-
-  const createConfigParam = {
-    config: config.publicKey,
-    feeClaimer,
-    leftoverReceiver: feeClaimer,
-    quoteMint: NATIVE_MINT,
-    payer: payer.publicKey,
-    poolFees: {
-      baseFee: {
-        cliffFeeNumerator: new BN("2500000"),
-        numberOfPeriod: 0,
-        reductionFactor: new BN("0"),
-        periodFrequency: new BN("0"),
-        feeSchedulerMode: FeeSchedulerMode.Linear,
-      },
-      dynamicFee: null,
-    },
-    activationType: ActivationType.Slot,
-    collectFeeMode: CollectFeeMode.OnlyQuote,
-    migrationOption: MigrationOption.MET_DAMM_V2,
-    tokenType: TokenType.Token2022,
-    tokenDecimal: TokenDecimal.NINE,
-    migrationQuoteThreshold: new BN("3000000000"),
-    partnerLpPercentage: 50,
-    creatorLpPercentage: 50,
-    partnerLockedLpPercentage: 0,
-    creatorLockedLpPercentage: 0,
-    sqrtStartPrice: new BN("58333726687135158"),
-    lockedVesting: {
-      amountPerPeriod: new BN(0),
-      cliffDurationFromMigrationTime: new BN(0),
-      frequency: new BN(0),
-      numberOfPeriod: new BN(0),
-      cliffUnlockAmount: new BN(0),
-    },
-    migrationFeeOption: MigrationFeeOption.FixedBps100,
-    tokenSupply: {
-      preMigrationTokenSupply: new BN("10000000000000000000"),
-      postMigrationTokenSupply: new BN("10000000000000000000"),
-    },
-    creatorTradingFeePercentage: 0,
-    padding0: [],
-    padding1: [],
-    curve: [
-      {
-        sqrtPrice: new BN("233334906748540631"),
-        liquidity: new BN("622226417996106429201027821619672729"),
-      },
-      {
-        sqrtPrice: new BN("79226673521066979257578248091"),
-        liquidity: new BN("1"),
-      },
-    ],
-  };
+  const configAddress = new PublicKey('')
+  console.log(`Using config: ${configAddress.toString()}`)
 
   try {
-    const client = new DynamicBondingCurveClient(connection, "confirmed");
+      const baseMint = Keypair.generate()
+      console.log(`Generated base mint: ${baseMint.publicKey.toString()}`)
 
-    const transaction = await client.partner.createConfig(createConfigParam);
+      const createPoolParam = {
+          quoteMint: NATIVE_MINT,
+          baseMint: baseMint.publicKey,
+          config: configAddress,
+          baseTokenType: TokenType.SPL,
+          quoteTokenType: TokenType.SPL,
+          name: 'Test',
+          symbol: 'TEST',
+          uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Test-Logo.svg/2560px-Test-Logo.svg.png',
+          payer: payer.publicKey,
+          poolCreator: poolCreator.publicKey,
+      }
 
-    const { blockhash } = await connection.getLatestBlockhash("confirmed");
-    transaction.recentBlockhash = blockhash;
-    transaction.feePayer = payer.publicKey;
+      const client = new DynamicBondingCurveClient(connection, 'confirmed')
 
-    transaction.partialSign(config);
+      console.log('Creating pool transaction...')
+      const poolTransaction = await client.pool.createPool(createPoolParam)
 
-    const signature = await sendAndConfirmTransaction(
-      connection,
-      transaction,
-      [payer, config],
-      { commitment: "confirmed" }
-    );
-
-    console.log(`Config created successfully!`);
-    console.log(`Transaction: https://solscan.io/tx/${signature}`);
-    console.log(`Config address: ${config.publicKey.toString()}`);
+      const signature = await sendAndConfirmTransaction(
+          connection,
+          poolTransaction,
+          [payer, baseMint, poolCreator],
+          {
+              commitment: 'confirmed',
+              skipPreflight: true,
+          }
+      )
+      console.log('Transaction confirmed!')
+      console.log(
+          `Pool created: https://solscan.io/tx/${signature}?cluster=devnet`
+      )
   } catch (error) {
-    console.error("Failed to create config:", error);
+      console.error('Failed to create pool:', error)
+      console.log('Error details:', JSON.stringify(error, null, 2))
   }
 }
 
-createConfig()
+createPool()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+      console.error(error)
+      process.exit(1)
+  })
