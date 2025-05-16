@@ -18,6 +18,10 @@ This folder contains examples for interacting with Meteora's Dynamic Bonding Cur
 
 - [Swap Buy](./src/swap-buy.ts)
 
+## Simulate Curve
+
+- [Simulate Curve](./src/simulate-curve.ts)
+
 ## Getting Started
 
 ### Install dependencies

@@ -5,7 +5,8 @@
     "scripts": {
         "create-config": "tsx src/create-config.ts",
         "create-pool": "tsx src/create-pool.ts",
-        "create-partner-metadata": "tsx src/create-partner-metadata.ts"
+        "create-partner-metadata": "tsx src/create-partner-metadata.ts",
+        "simulate-curve": "tsx src/simulate-curve.ts"
     },
     "keywords": [],
     "author": "@dannweeeee",
