@@ -4,7 +4,7 @@ import {
   PublicKey,
   sendAndConfirmTransaction,
 } from '@solana/web3.js'
-import { DynamicBondingCurveClient, TokenType } from '@meteora-ag/dynamic-bonding-curve-sdk'
+import { DynamicBondingCurveClient } from '@meteora-ag/dynamic-bonding-curve-sdk'
 import bs58 from 'bs58'
 
 async function createPool() {
