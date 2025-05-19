@@ -12,6 +12,7 @@ import {
   FeeSchedulerMode,
   MigrationFeeOption,
   TokenDecimal,
+  buildCurve,
 } from "@meteora-ag/dynamic-bonding-curve-sdk";
 import { NATIVE_MINT } from "@solana/spl-token";
 import BN from "bn.js";
@@ -38,64 +39,53 @@ async function createConfig() {
 
   const feeClaimer = owner.publicKey;
 
-  const createConfigParam = {
-    config: config.publicKey,
-    feeClaimer,
-    leftoverReceiver: feeClaimer,
-    quoteMint: NATIVE_MINT,
-    payer: payer.publicKey,
-    poolFees: {
-      baseFee: {
-        cliffFeeNumerator: new BN("2500000"),
-        numberOfPeriod: 0,
-        reductionFactor: new BN("0"),
-        periodFrequency: new BN("0"),
-        feeSchedulerMode: FeeSchedulerMode.Linear,
-      },
-      dynamicFee: null,
+  const curveConfig = buildCurve({
+    totalTokenSupply: 1000000000,
+    percentageSupplyOnMigration: 14,
+    migrationQuoteThreshold: 100,
+    migrationOption: MigrationOption.MET_DAMM,
+    tokenBaseDecimal: TokenDecimal.NINE,
+    tokenQuoteDecimal: TokenDecimal.NINE,
+    lockedVesting: {
+        amountPerPeriod: new BN(1),
+        cliffDurationFromMigrationTime: new BN(1),
+        frequency: new BN(1),
+        numberOfPeriod: new BN(1),
+        cliffUnlockAmount: new BN(250_000_000).mul(
+            new BN(10).pow(new BN(TokenDecimal.NINE))
+        ),
     },
+    feeSchedulerParam: {
+        numberOfPeriod: 0,
+        reductionFactor: 0,
+        periodFrequency: 0,
+        feeSchedulerMode: FeeSchedulerMode.Linear,
+    },
+    baseFeeBps: 25,
+    dynamicFeeEnabled: true,
     activationType: ActivationType.Slot,
     collectFeeMode: CollectFeeMode.OnlyQuote,
-    migrationOption: MigrationOption.MET_DAMM_V2,
-    tokenType: TokenType.SPL,
-    tokenDecimal: TokenDecimal.NINE,
-    migrationQuoteThreshold: new BN("3000000000"),
-    partnerLpPercentage: 50,
-    creatorLpPercentage: 50,
-    partnerLockedLpPercentage: 0,
-    creatorLockedLpPercentage: 0,
-    sqrtStartPrice: new BN("58333726687135158"),
-    lockedVesting: {
-      amountPerPeriod: new BN(0),
-      cliffDurationFromMigrationTime: new BN(0),
-      frequency: new BN(0),
-      numberOfPeriod: new BN(0),
-      cliffUnlockAmount: new BN(0),
-    },
     migrationFeeOption: MigrationFeeOption.FixedBps100,
-    tokenSupply: {
-      preMigrationTokenSupply: new BN("10000000000000000000"),
-      postMigrationTokenSupply: new BN("10000000000000000000"),
-    },
-    creatorTradingFeePercentage: 0,
-    padding0: [],
-    padding1: [],
-    curve: [
-      {
-        sqrtPrice: new BN("233334906748540631"),
-        liquidity: new BN("622226417996106429201027821619672729"),
-      },
-      {
-        sqrtPrice: new BN("79226673521066979257578248091"),
-        liquidity: new BN("1"),
-      },
-    ],
-  };
+    tokenType: TokenType.SPL,
+    partnerLpPercentage: 0,
+    creatorLpPercentage: 0,
+    partnerLockedLpPercentage: 50,
+    creatorLockedLpPercentage: 50,
+    creatorTradingFeePercentage: 50,
+    leftover: 0,
+})
 
   try {
     const client = new DynamicBondingCurveClient(connection, "confirmed");
 
-    const transaction = await client.partner.createConfig(createConfigParam);
+    const transaction = await client.partner.createConfig({
+      config: config.publicKey,
+      feeClaimer,
+      leftoverReceiver: feeClaimer,
+      quoteMint: NATIVE_MINT,
+      payer: payer.publicKey,
+      ...curveConfig
+    });
 
     const { blockhash } = await connection.getLatestBlockhash("confirmed");
     transaction.recentBlockhash = blockhash;
