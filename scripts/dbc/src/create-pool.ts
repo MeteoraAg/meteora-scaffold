@@ -5,7 +5,6 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js'
 import { DynamicBondingCurveClient, TokenType } from '@meteora-ag/dynamic-bonding-curve-sdk'
-import { NATIVE_MINT } from '@solana/spl-token'
 import bs58 from 'bs58'
 
 async function createPool() {
@@ -32,11 +31,8 @@ async function createPool() {
       console.log(`Generated base mint: ${baseMint.publicKey.toString()}`)
 
       const createPoolParam = {
-          quoteMint: NATIVE_MINT,
           baseMint: baseMint.publicKey,
           config: configAddress,
-          baseTokenType: TokenType.SPL,
-          quoteTokenType: TokenType.SPL,
           name: 'Test',
           symbol: 'TEST',
           uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Test-Logo.svg/2560px-Test-Logo.svg.png',
