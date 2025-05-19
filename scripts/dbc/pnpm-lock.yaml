@@ -14,6 +14,9 @@ importers:
       '@meteora-ag/dynamic-bonding-curve-sdk':
         specifier: ^1.1.4
         version: 1.1.4(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10)
+      '@solana/spl-token':
+        specifier: ^0.4.13
+        version: 0.4.13(@solana/web3.js@1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)(utf-8-validate@5.0.10)
       '@solana/web3.js':
         specifier: ^1.98.2
         version: 1.98.2(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
@@ -23,10 +26,16 @@ importers:
       bs58:
         specifier: ^6.0.0
         version: 6.0.0
+      decimal.js:
+        specifier: ^10.5.0
+        version: 10.5.0
     devDependencies:
       '@types/bn.js':
         specifier: ^5.1.6
         version: 5.1.6
+      '@types/decimal.js':
+        specifier: ^7.4.3
+        version: 7.4.3
       tsx:
         specifier: ^4.19.3
         version: 4.19.4
@@ -307,6 +316,10 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
+
+  '@types/decimal.js@7.4.3':
+    resolution: {integrity: sha512-7MpxcJPHqQ637FCZwJLtJMaDZkcD/iyUxj0m8A+m06slFeqRiK9QtgEyuocWNRbEtCrOZOEbZPTSSR88hMZVsg==}
+    deprecated: This is a stub types definition. decimal.js provides its own type definitions, so you do not need this installed.
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
@@ -839,6 +852,10 @@ snapshots:
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 12.20.55
+
+  '@types/decimal.js@7.4.3':
+    dependencies:
+      decimal.js: 10.5.0
 
   '@types/node@12.20.55': {}
 
