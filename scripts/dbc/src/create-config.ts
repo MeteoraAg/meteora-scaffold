@@ -1,6 +1,7 @@
 import {
   Connection,
   Keypair,
+  PublicKey,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
 import {
@@ -24,11 +25,6 @@ async function createConfig() {
   const payer = Keypair.fromSecretKey(payerSecretKey);
   console.log("Payer public key:", payer.publicKey.toBase58());
 
-  const OWNER_PRIVATE_KEY = "";
-  const ownerSecretKey = bs58.decode(OWNER_PRIVATE_KEY);
-  const owner = Keypair.fromSecretKey(ownerSecretKey);
-  console.log("Owner public key:", owner.publicKey.toBase58());
-
   const connection = new Connection(
     "https://api.mainnet-beta.solana.com",
     "confirmed"
@@ -37,7 +33,7 @@ async function createConfig() {
   const config = Keypair.generate();
   console.log(`Config account: ${config.publicKey.toString()}`);
 
-  const feeClaimer = owner.publicKey;
+  const feeClaimer = new PublicKey("HW2Cg9ZYRGZRzXfdgc1pgGxdYduyVvYrYkg1H2PVLo1H");
 
   const curveConfig = buildCurve({
     totalTokenSupply: 1000000000,
@@ -69,9 +65,9 @@ async function createConfig() {
     tokenType: TokenType.SPL,
     partnerLpPercentage: 0,
     creatorLpPercentage: 0,
-    partnerLockedLpPercentage: 50,
-    creatorLockedLpPercentage: 50,
-    creatorTradingFeePercentage: 50,
+    partnerLockedLpPercentage: 0,
+    creatorLockedLpPercentage: 100,
+    creatorTradingFeePercentage: 100,
     leftover: 0,
 })
 
@@ -82,7 +78,7 @@ async function createConfig() {
       config: config.publicKey,
       feeClaimer,
       leftoverReceiver: feeClaimer,
-      quoteMint: NATIVE_MINT,
+      quoteMint: new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
       payer: payer.publicKey,
       ...curveConfig
     });
