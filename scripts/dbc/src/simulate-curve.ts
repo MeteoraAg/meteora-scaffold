@@ -8,15 +8,13 @@ import {
     TokenDecimal,
     TokenType,
     DynamicBondingCurveClient,
-    BuildCurveGraphAndCreateConfigParam,
-    BuildCurveGraphParam,
 } from '@meteora-ag/dynamic-bonding-curve-sdk'
 import { Connection, Keypair, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js'
 import BN from 'bn.js'
 import Decimal from 'decimal.js'
 import bs58 from 'bs58'
 
-async function testBuildCurveGraph() {
+async function simulateCurve() {
     console.log('Testing buildCurveGraph...')
 
     // semi bullish curve
@@ -54,7 +52,7 @@ async function testBuildCurveGraph() {
     //     327.68, // 15
     // ]
 
-    const config = buildCurveGraph({
+    const curveConfig = buildCurveGraph({
         totalTokenSupply: 1000000000,
         initialMarketCap: 5000,
         migrationMarketCap: 1000000,
@@ -89,65 +87,8 @@ async function testBuildCurveGraph() {
         liquidityWeights,
     })
 
-    console.log('BuildCurveGraph Config:', config)
-}
-
-async function deployConfig() {
-    console.log('Deploying config...')
-
-    // adjust this weights to your liking
-    let liquidityWeights: number[] = []
-
-    for (let i = 0; i < 16; i++) {
-        if (i < 5) {
-            liquidityWeights[i] = new Decimal(1.1)
-                .pow(new Decimal(i))
-                .toNumber()
-        } else {
-            liquidityWeights[i] = new Decimal(1.4)
-                .pow(new Decimal(i))
-                .toNumber()
-        }
-    }
-
-    const curveConfig: BuildCurveGraphParam = {
-        totalTokenSupply: 1000000000,
-        initialMarketCap: 500,
-        migrationMarketCap: 1000000,
-        migrationOption: MigrationOption.MET_DAMM_V2,
-        tokenBaseDecimal: TokenDecimal.SIX,
-        tokenQuoteDecimal: TokenDecimal.SIX,
-        lockedVesting: {
-            amountPerPeriod: new BN(0),
-            cliffDurationFromMigrationTime: new BN(0),
-            frequency: new BN(0),
-            numberOfPeriod: new BN(0),
-            cliffUnlockAmount: new BN(0),
-        },
-        feeSchedulerParam: {
-            numberOfPeriod: 0,
-            reductionFactor: 0,
-            periodFrequency: 0,
-            feeSchedulerMode: FeeSchedulerMode.Linear,
-        },
-        baseFeeBps: 100,
-        dynamicFeeEnabled: true,
-        activationType: ActivationType.Slot,
-        collectFeeMode: CollectFeeMode.OnlyQuote,
-        migrationFeeOption: MigrationFeeOption.FixedBps25,
-        tokenType: TokenType.SPL,
-        partnerLpPercentage: 0,
-        creatorLpPercentage: 0,
-        partnerLockedLpPercentage: 0,
-        creatorLockedLpPercentage: 100,
-        creatorTradingFeePercentage: 0,
-        leftover: 500000000,
-        liquidityWeights,
-    }
-
     console.log('BuildCurveGraph Config:', curveConfig)
 
-    
     try {
         const PAYER_PRIVATE_KEY = "";
         const payerSecretKey = bs58.decode(PAYER_PRIVATE_KEY);
@@ -163,17 +104,15 @@ async function deployConfig() {
 
         const client = new DynamicBondingCurveClient(connection, 'confirmed')
 
-        const buildCurveGraphParam: BuildCurveGraphAndCreateConfigParam = {
-            buildCurveGraphParam: curveConfig,
-            feeClaimer: new PublicKey(''),
-            leftoverReceiver: new PublicKey(''),
-            quoteMint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
-            payer: payer.publicKey,
-            config: config.publicKey,
-        }
-
-        const transaction = await client.partner.buildCurveGraphAndCreateConfig(
-            buildCurveGraphParam
+        const transaction = await client.partner.createConfig(
+            { 
+                feeClaimer: new PublicKey(''),
+                leftoverReceiver: new PublicKey(''),
+                quoteMint: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'), // USDC
+                payer: payer.publicKey,
+                config: config.publicKey,
+                ...curveConfig
+            }
         )
 
         const { blockhash } = await connection.getLatestBlockhash('confirmed')
@@ -199,17 +138,9 @@ async function deployConfig() {
     } 
 }
 
-async function main() {
-    try {
-        await testBuildCurveGraph()
-        console.log('\n')
-        // await deployConfig()
-    } catch (error) {
-        console.error('Error in main:', error)
-    }
-}
 
-main()
+
+simulateCurve()
     .then(() => process.exit(0))
     .catch((error) => {
         console.error(error)
