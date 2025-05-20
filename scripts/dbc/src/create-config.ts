@@ -78,7 +78,7 @@ async function createConfig() {
       config: config.publicKey,
       feeClaimer,
       leftoverReceiver: feeClaimer,
-      quoteMint: new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"),
+      quoteMint: new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"), // USDC
       payer: payer.publicKey,
       ...curveConfig
     });
