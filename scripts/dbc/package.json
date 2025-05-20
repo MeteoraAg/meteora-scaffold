@@ -6,7 +6,9 @@
         "create-config": "tsx src/create-config.ts",
         "create-pool": "tsx src/create-pool.ts",
         "create-partner-metadata": "tsx src/create-partner-metadata.ts",
-        "simulate-curve": "tsx src/simulate-curve.ts"
+        "simulate-curve": "tsx src/simulate-curve.ts",
+        "swap-buy": "tsx src/swap-buy.ts",
+        "swap-quote": "tsx src/swap-quote.ts"
     },
     "keywords": [],
     "author": "@dannweeeee",
