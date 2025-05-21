@@ -13,7 +13,7 @@ import {
   FeeSchedulerMode,
   MigrationFeeOption,
   TokenDecimal,
-  buildCurve,
+  buildCurveWithTwoSegments,
 } from "@meteora-ag/dynamic-bonding-curve-sdk";
 import { NATIVE_MINT } from "@solana/spl-token";
 import BN from "bn.js";
@@ -33,31 +33,30 @@ async function createConfig() {
   const config = Keypair.generate();
   console.log(`Config account: ${config.publicKey.toString()}`);
 
-  const feeClaimer = new PublicKey("HW2Cg9ZYRGZRzXfdgc1pgGxdYduyVvYrYkg1H2PVLo1H");
+  const feeClaimer = new PublicKey("");
 
-  const curveConfig = buildCurve({
+  const curveConfig = buildCurveWithTwoSegments({
     totalTokenSupply: 1000000000,
-    percentageSupplyOnMigration: 14,
-    migrationQuoteThreshold: 100,
-    migrationOption: MigrationOption.MET_DAMM,
-    tokenBaseDecimal: TokenDecimal.NINE,
+    initialMarketCap: 20,
+    migrationMarketCap: 320,
+    percentageSupplyOnMigration: 20,
+    migrationOption: MigrationOption.MET_DAMM_V2,
+    tokenBaseDecimal: TokenDecimal.SIX,
     tokenQuoteDecimal: TokenDecimal.NINE,
     lockedVesting: {
-        amountPerPeriod: new BN(1),
-        cliffDurationFromMigrationTime: new BN(1),
-        frequency: new BN(1),
-        numberOfPeriod: new BN(1),
-        cliffUnlockAmount: new BN(250_000_000).mul(
-            new BN(10).pow(new BN(TokenDecimal.NINE))
-        ),
+        amountPerPeriod: new BN(0),
+        cliffDurationFromMigrationTime: new BN(0),
+        frequency: new BN(0),
+        numberOfPeriod: new BN(0),
+        cliffUnlockAmount: new BN(0),
     },
     feeSchedulerParam: {
+        startingFeeBps: 25,
+        endingFeeBps: 25,
         numberOfPeriod: 0,
-        reductionFactor: 0,
-        periodFrequency: 0,
+        totalDuration: 0,
         feeSchedulerMode: FeeSchedulerMode.Linear,
     },
-    baseFeeBps: 25,
     dynamicFeeEnabled: true,
     activationType: ActivationType.Slot,
     collectFeeMode: CollectFeeMode.OnlyQuote,
@@ -65,11 +64,13 @@ async function createConfig() {
     tokenType: TokenType.SPL,
     partnerLpPercentage: 0,
     creatorLpPercentage: 0,
-    partnerLockedLpPercentage: 0,
-    creatorLockedLpPercentage: 100,
-    creatorTradingFeePercentage: 100,
-    leftover: 0,
+    partnerLockedLpPercentage: 100,
+    creatorLockedLpPercentage: 0,
+    creatorTradingFeePercentage: 0,
+    leftover: 10000,
 })
+
+console.log("curve config", curveConfig);
 
   try {
     const client = new DynamicBondingCurveClient(connection, "confirmed");
@@ -78,7 +79,7 @@ async function createConfig() {
       config: config.publicKey,
       feeClaimer,
       leftoverReceiver: feeClaimer,
-      quoteMint: new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"), // USDC
+      quoteMint: NATIVE_MINT,
       payer: payer.publicKey,
       ...curveConfig
     });
