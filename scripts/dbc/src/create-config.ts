@@ -13,7 +13,7 @@ import {
   FeeSchedulerMode,
   MigrationFeeOption,
   TokenDecimal,
-  buildCurveWithTwoSegments,
+  buildCurveWithMarketCap,
 } from "@meteora-ag/dynamic-bonding-curve-sdk";
 import { NATIVE_MINT } from "@solana/spl-token";
 import BN from "bn.js";
@@ -35,11 +35,10 @@ async function createConfig() {
 
   const feeClaimer = new PublicKey("");
 
-  const curveConfig = buildCurveWithTwoSegments({
+  const curveConfig = buildCurveWithMarketCap({
     totalTokenSupply: 1000000000,
     initialMarketCap: 20,
     migrationMarketCap: 320,
-    percentageSupplyOnMigration: 20,
     migrationOption: MigrationOption.MET_DAMM_V2,
     tokenBaseDecimal: TokenDecimal.SIX,
     tokenQuoteDecimal: TokenDecimal.NINE,
