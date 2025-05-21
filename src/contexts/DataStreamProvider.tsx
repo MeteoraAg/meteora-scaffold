@@ -29,7 +29,7 @@ const DataStreamContext = createContext<DataStreamContextType | null>(null);
 export const DataStreamProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = useQueryClient();
   const partnerConfigs = useMemo(
-    () => process.env.NEXT_PUBLIC_PARTNER_CONFIGS?.split(',') || [],
+    () => process.env.NEXT_PUBLIC_POOL_CONFIG_KEY?.split(',') || [],
     []
   );
   const setDataStreamMsg = useSetAtom(dataStreamMsgAtom);

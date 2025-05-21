@@ -51,7 +51,7 @@ const ExploreContext = createContext<ExploreContextType>({
 
 const ExploreProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const partnerConfigs = useMemo(
-    () => process.env.NEXT_PUBLIC_PARTNER_CONFIGS?.split(',') || [],
+    () => process.env.NEXT_PUBLIC_POOL_CONFIG_KEY?.split(',') || [],
     []
   );
 
