@@ -1,5 +1,4 @@
 import {
-    buildCurveGraph,
     ActivationType,
     CollectFeeMode,
     FeeSchedulerMode,
@@ -8,6 +7,8 @@ import {
     TokenDecimal,
     TokenType,
     DynamicBondingCurveClient,
+    buildCurveWithLiquidityWeights,
+    TokenUpdateAuthorityOption,
 } from '@meteora-ag/dynamic-bonding-curve-sdk'
 import { Connection, Keypair, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js'
 import BN from 'bn.js'
@@ -52,27 +53,27 @@ async function simulateCurve() {
     //     327.68, // 15
     // ]
 
-    const curveConfig = buildCurveGraph({
+    const curveConfig = buildCurveWithLiquidityWeights({
         totalTokenSupply: 1000000000,
         initialMarketCap: 5000,
         migrationMarketCap: 1000000,
         migrationOption: MigrationOption.MET_DAMM_V2,
         tokenBaseDecimal: TokenDecimal.SIX,
         tokenQuoteDecimal: TokenDecimal.SIX,
-        lockedVesting: {
-            amountPerPeriod: new BN(0),
-            cliffDurationFromMigrationTime: new BN(0),
-            frequency: new BN(0),
-            numberOfPeriod: new BN(0),
-            cliffUnlockAmount: new BN(0),
+        lockedVestingParam: {
+            totalLockedVestingAmount: 0,
+            numberOfVestingPeriod: 0,
+            cliffUnlockAmount: 0,
+            totalVestingDuration: 0,
+            cliffDurationFromMigrationTime: 0,
         },
-        feeSchedulerParam: {
-            numberOfPeriod: 0,
-            reductionFactor: 0,
-            periodFrequency: 0,
-            feeSchedulerMode: FeeSchedulerMode.Linear,
-        },
-        baseFeeBps: 100,
+          feeSchedulerParam: {
+              startingFeeBps: 100,
+              endingFeeBps: 100,
+              numberOfPeriod: 0,
+              totalDuration: 0,
+              feeSchedulerMode: FeeSchedulerMode.Linear,
+          },
         dynamicFeeEnabled: true,
         activationType: ActivationType.Slot,
         collectFeeMode: CollectFeeMode.OnlyQuote,
@@ -85,6 +86,11 @@ async function simulateCurve() {
         creatorTradingFeePercentage: 0,
         leftover: 1000000,
         liquidityWeights,
+        tokenUpdateAuthority: TokenUpdateAuthorityOption.Immutable,
+        migrationFee: {
+            feePercentage: 0,
+            creatorFeePercentage: 0
+        }
     })
 
     console.log('BuildCurveGraph Config:', curveConfig)

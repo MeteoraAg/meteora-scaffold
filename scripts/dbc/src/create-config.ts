@@ -14,6 +14,7 @@ import {
   MigrationFeeOption,
   TokenDecimal,
   buildCurveWithMarketCap,
+  TokenUpdateAuthorityOption,
 } from "@meteora-ag/dynamic-bonding-curve-sdk";
 import { NATIVE_MINT } from "@solana/spl-token";
 import BN from "bn.js";
@@ -42,16 +43,16 @@ async function createConfig() {
     migrationOption: MigrationOption.MET_DAMM_V2,
     tokenBaseDecimal: TokenDecimal.SIX,
     tokenQuoteDecimal: TokenDecimal.NINE,
-    lockedVesting: {
-        amountPerPeriod: new BN(0),
-        cliffDurationFromMigrationTime: new BN(0),
-        frequency: new BN(0),
-        numberOfPeriod: new BN(0),
-        cliffUnlockAmount: new BN(0),
-    },
+    lockedVestingParam: {
+      totalLockedVestingAmount: 0,
+      numberOfVestingPeriod: 0,
+      cliffUnlockAmount: 0,
+      totalVestingDuration: 0,
+      cliffDurationFromMigrationTime: 0,
+  },
     feeSchedulerParam: {
-        startingFeeBps: 25,
-        endingFeeBps: 25,
+        startingFeeBps: 100,
+        endingFeeBps: 100,
         numberOfPeriod: 0,
         totalDuration: 0,
         feeSchedulerMode: FeeSchedulerMode.Linear,
@@ -67,6 +68,11 @@ async function createConfig() {
     creatorLockedLpPercentage: 0,
     creatorTradingFeePercentage: 0,
     leftover: 10000,
+    tokenUpdateAuthority: TokenUpdateAuthorityOption.Immutable,
+    migrationFee: {
+      feePercentage: 0,
+      creatorFeePercentage: 0
+    }
 })
 
 console.log("curve config", curveConfig);
