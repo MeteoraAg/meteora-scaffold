@@ -55,17 +55,17 @@ async function simulateCurve() {
 
     const curveConfig = buildCurveWithLiquidityWeights({
         totalTokenSupply: 1000000000,
-        initialMarketCap: 5000,
+        initialMarketCap: 250,
         migrationMarketCap: 1000000,
         migrationOption: MigrationOption.MET_DAMM_V2,
         tokenBaseDecimal: TokenDecimal.SIX,
         tokenQuoteDecimal: TokenDecimal.SIX,
         lockedVestingParam: {
-            totalLockedVestingAmount: 0,
-            numberOfVestingPeriod: 0,
-            cliffUnlockAmount: 0,
+            totalLockedVestingAmount: 200000000,
+            numberOfVestingPeriod: 1,
+            cliffUnlockAmount: 200000000,
             totalVestingDuration: 0,
-            cliffDurationFromMigrationTime: 0,
+            cliffDurationFromMigrationTime: (1000 * 365 * 24 * 60 * 60) / 0.4,
         },
           feeSchedulerParam: {
               startingFeeBps: 100,
@@ -77,7 +77,7 @@ async function simulateCurve() {
         dynamicFeeEnabled: true,
         activationType: ActivationType.Slot,
         collectFeeMode: CollectFeeMode.OnlyQuote,
-        migrationFeeOption: MigrationFeeOption.FixedBps100,
+        migrationFeeOption: MigrationFeeOption.FixedBps25,
         tokenType: TokenType.SPL,
         partnerLpPercentage: 100,
         creatorLpPercentage: 0,
@@ -94,6 +94,7 @@ async function simulateCurve() {
     })
 
     console.log('BuildCurveGraph Config:', curveConfig)
+    console.log('migrationQuoteThreshold', curveConfig.migrationQuoteThreshold.toString())
 
     try {
         const PAYER_PRIVATE_KEY = "";
