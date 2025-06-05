@@ -18,9 +18,15 @@ pnpm install
 ```
 
 3. Set up environment variables
-   Create a `.env` file in the root directory with the following variables:
+
+```bash
+cp .env.example .env
+```
+
+4. Edit the `.env` file with your own values
 
 ```env
+# .env
 # Cloudflare R2 Storage
 R2_ACCESS_KEY_ID=your_r2_access_key_id
 R2_SECRET_ACCESS_KEY=your_r2_secret_access_key
@@ -54,7 +60,7 @@ POOL_CONFIG_KEY=your_pool_config_key
 
 The pool config key is used to configure the bonding curve parameters. You'll need to:
 
-1. Deploy your own pool config program
+1. Deploy your own pool config on the Dynamic Bonding Curve program
 2. Or use an existing pool config program
 3. Get the public key of the pool config account
 

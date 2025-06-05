@@ -19,7 +19,6 @@
         "check-types": "turbo run check-types"
     },
     "workspaces": [
-        "scripts/*",
         "templates/*"
     ]
 }
