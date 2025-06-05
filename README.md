@@ -4,9 +4,8 @@ Monorepo of Meteora's Scripts and FE Templates.
 
 ## Directory
 
-### Scripts
-
-- [`Dynamic Bonding Curve`](./scripts/dbc): Build your own dynamic bonding curve using these scripts
+├── templates
+│ └── fun-launch
 
 ### Templates
 
