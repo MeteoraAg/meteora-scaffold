@@ -2,16 +2,16 @@ import { ToggleGroup as ToggleGroupPrimitive } from 'radix-ui';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { DateMode } from './datemode';
-import { Tx } from '../Explore/types';
+import { Tx } from '../../Explore/types';
 import { CurrentAge } from './CurrentAge';
 import { Badge } from './Badge';
 import { intlDate } from '@/lib/format/date';
-import { ReadableNumber } from '../ui/ReadableNumber';
-import { TruncatedAddress } from '../TruncatedAddress/TruncatedAddress';
-import { ExternalLink } from '../ui/ExternalLink';
-import { TableCell } from '../Table';
-import { TableRow } from '../Table';
-import { Skeleton } from '../ui/Skeleton';
+import { ReadableNumber } from '../../ui/ReadableNumber';
+import { TruncatedAddress } from '../../TruncatedAddress/TruncatedAddress';
+import { ExternalLink } from '../../ui/ExternalLink';
+import { TableCell } from '../../Table';
+import { TableRow } from '../../Table';
+import { Skeleton } from '../../ui/Skeleton';
 import ExternalIcon from '@/icons/ExternalIcon';
 
 export const columns: ColumnDef<Tx>[] = [

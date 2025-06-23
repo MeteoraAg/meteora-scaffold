@@ -56,3 +56,30 @@ export function useWindowWidthListener(): void {
     };
   }, [setWindowWidth]);
 }
+
+/**
+ * Map of all breakpoints with boolean values indicating if the current width is >= that breakpoint
+ */
+type BreakpointMatches = {
+  [K in Breakpoint]: boolean;
+};
+
+const breakpointMatchesAtom = atom<BreakpointMatches>((get) => {
+  // Derive from breakpoint atom instead of window width
+  // This is more efficient as it avoids re-renders when width changes
+  const currentBreakpoint = get(breakpointAtom);
+
+  // Current breakpoint index
+  const currentIndex = SORTED_BREAKPOINTS.findIndex(([bp]) => bp === currentBreakpoint);
+
+  // If position is less (larger) than current, the breakpoint is true
+  const result = {} as BreakpointMatches;
+  for (let i = 0; i < SORTED_BREAKPOINTS.length; i++) {
+    const [breakpoint] = SORTED_BREAKPOINTS[i];
+    result[breakpoint] = i >= currentIndex;
+  }
+
+  return result;
+});
+
+export const useBreakpointMatches = () => useAtomValue(breakpointMatchesAtom);

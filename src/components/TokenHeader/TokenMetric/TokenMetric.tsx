@@ -76,3 +76,16 @@ export const MetricLiquidity: React.FC<{ className?: string }> = ({ className })
     />
   );
 };
+
+export const MetricHolders: React.FC<{ className?: string }> = ({ className }) => {
+  const { data: baseAsset } = useTokenInfo((data) => data?.baseAsset);
+
+  return (
+    <TokenMetric
+      className={cn('flex py-3 items-center justify-between', className)}
+      label="Holders"
+      num={baseAsset?.holderCount ?? 0}
+      integer
+    />
+  );
+};

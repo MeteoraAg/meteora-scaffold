@@ -3,8 +3,9 @@ import { TokenChart } from '@/components/TokenChart/TokenChart';
 import { TokenDetails } from '@/components/TokenHeader/TokenDetail';
 import { TokenHeader } from '@/components/TokenHeader/TokenHeader';
 import { TokenStats } from '@/components/TokenHeader/TokenStats';
-import { TxnsTab } from '@/components/TokenTransactions';
-import { TxTable } from '@/components/TokenTransactions/TxTable';
+import { TokenBottomPanel } from '@/components/TokenTable';
+import { TxnsTab } from '@/components/TokenTable/TxnsTab';
+import { TxTable } from '@/components/TokenTable/TxnsTab/TxTable';
 import Page from '@/components/ui/Page/Page';
 import { DataStreamProvider, useDataStream } from '@/contexts/DataStreamProvider';
 import { TokenChartProvider } from '@/contexts/TokenChartProvider';
@@ -75,9 +76,12 @@ export const TokenPageWithContext = () => {
 
             {/* Height 0 makes the element not contribute to height sizing */}
             {/* Min height 100% makes the element fill height */}
-            <div className="flex flex-1 flex-col overflow-hidden mt-4 h-[300px] lg:h-[500px] max-sm:order-4">
+
+            <TokenBottomPanel className="flex h-0 min-h-full flex-col overflow-hidden" />
+
+            {/* <div className="flex flex-1 flex-col overflow-hidden mt-4 h-[300px] lg:h-[500px] max-sm:order-4">
               <TxnsTab />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

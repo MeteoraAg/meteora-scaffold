@@ -1,10 +1,10 @@
 import { useTokenAddress, useTokenInfo } from '@/hooks/queries';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { memo, useEffect, useMemo, useState } from 'react';
-import { ApeQueries } from '../Explore/queries';
+import { ApeQueries } from '../../Explore/queries';
 import { TxTable } from './TxTable';
 import { columns } from './columns';
-import { Tx } from '../Explore/types';
+import { Tx } from '../../Explore/types';
 
 export const TxnsTab: React.FC = memo(() => {
   const tokenId = useTokenAddress();

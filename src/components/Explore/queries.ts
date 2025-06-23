@@ -9,6 +9,7 @@ import {
   TokenListTimeframe,
   resolveTokenListFilters,
 } from './types';
+import { ExtractQueryData } from '@/types/fancytypes';
 
 export type QueryData<T> = T extends (...args: infer OptionsArgs) => {
   queryFn: (...args: infer Args) => Promise<infer R>;
@@ -22,6 +23,8 @@ export type GemsTokenListQueryArgs = {
     filters?: TokenListFilters;
   };
 };
+
+export type TokenInfoQueryData = ExtractQueryData<typeof ApeQueries.tokenInfo>;
 
 // TODO: upgrade to `queryOptions` helper in react query v5
 // TODO: move this to a centralised file close to the `useQuery` hooks these are called in
@@ -66,7 +69,23 @@ export const ApeQueries = {
         if (!info?.pools[0]) {
           throw new Error('No token info found');
         }
-        return info?.pools[0];
+        const pool = info?.pools[0];
+
+        // Add frontend fields
+
+        return {
+          ...pool,
+          bondingCurveId: null,
+        };
+      },
+    };
+  },
+  tokenHolders: (args: { id: string }) => {
+    return {
+      queryKey: ['explore', 'token', args.id, 'holders'],
+      queryFn: async () => {
+        const res = await ApeClient.getTokenHolders(args.id);
+        return Object.assign(res, { args });
       },
     };
   },
