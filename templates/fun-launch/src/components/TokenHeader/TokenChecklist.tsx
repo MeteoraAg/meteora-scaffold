@@ -85,7 +85,7 @@ const ChecklistTopHolders: React.FC = () => {
       <HoverPopover root={true}>
         <HoverPopoverTrigger>
           <div className="truncate text-sm text-neutral-500 underline decoration-neutral-700 decoration-dashed underline-offset-4 group-hover:decoration-neutral-200">
-            {`Top 10 Holders`}
+            Top 10 Holders
           </div>
         </HoverPopoverTrigger>
         <HoverPopoverContent>

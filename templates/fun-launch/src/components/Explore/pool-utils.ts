@@ -10,6 +10,7 @@ import {
   TokenListTab,
   TokenListTimeframe,
 } from '@/components/Explore/types';
+import { Launchpad } from '@/contexts/types';
 
 export function getSorterFieldValue(
   field: TokenListSortByField,

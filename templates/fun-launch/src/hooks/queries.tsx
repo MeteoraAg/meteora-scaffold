@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { NATIVE_MINT } from '@solana/spl-token';
-import { ApeQueries, QueryData } from '@/components/Explore/queries';
+import { ApeQueries, QueryData, TokenInfoQueryData } from '@/components/Explore/queries';
 import { useQuery } from '@tanstack/react-query';
 import { formatPoolAsTokenInfo } from '@/components/Explore/pool-utils';
 
@@ -11,6 +11,15 @@ export function useTokenAddress() {
   return address;
 }
 
+export function usePageTokenInfo<T = TokenInfoQueryData>(select?: (data: TokenInfoQueryData) => T) {
+  const tokenId = useTokenAddress();
+  return useQuery({
+    ...ApeQueries.tokenInfo({ id: tokenId }),
+    refetchInterval: 60 * 1000,
+    select,
+  });
+}
+
 export function useTokenInfo<T = QueryData<typeof ApeQueries.tokenInfo>>(
   select?: (data: QueryData<typeof ApeQueries.tokenInfo>) => T
 ) {
@@ -19,6 +28,14 @@ export function useTokenInfo<T = QueryData<typeof ApeQueries.tokenInfo>>(
     ...ApeQueries.tokenInfo({ id: tokenId }),
     refetchInterval: 60 * 1000,
     select,
+  });
+}
+
+export function useHolders() {
+  const address = useTokenAddress();
+  return useQuery({
+    ...ApeQueries.tokenHolders({ id: address }),
+    refetchInterval: 5 * 1000,
   });
 }
 
