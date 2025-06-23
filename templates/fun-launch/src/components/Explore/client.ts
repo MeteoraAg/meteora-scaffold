@@ -7,6 +7,7 @@ import {
   GetTokenDescriptionResponse,
   GetTokenRequest,
   GetTokenResponse,
+  GetTopHoldersResponse,
   GetTxsRequest,
   GetTxsResponse,
 } from './types';
@@ -39,6 +40,10 @@ export class ApeClient {
         ...options,
       })
       .json();
+  }
+
+  static async getTokenHolders(assetId: string, options?: Options): Promise<GetTopHoldersResponse> {
+    return ky.get(`${BASE_URL}/v1/holders/${assetId}`, options).json();
   }
 
   static async getChart(

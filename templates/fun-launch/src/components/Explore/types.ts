@@ -211,6 +211,7 @@ export type Pool = {
     fdv?: number | undefined;
     mcap?: number | undefined;
     usdPrice?: number | undefined;
+    priceBlockId?: number | undefined;
     liquidity?: number | undefined;
     stats5m?: SwapStats | undefined;
     stats1h?: SwapStats | undefined;
@@ -222,6 +223,8 @@ export type Pool = {
           freezeAuthorityDisabled: boolean | undefined;
           topHoldersPercentage: number | undefined;
           lpBurnedPercentage: number | undefined;
+          devBalancePercentage?: number;
+          devMigrations?: number;
         }
       | undefined;
     organicScore?: number | undefined;
@@ -293,6 +296,18 @@ export type Tx = {
 export type Holder = {
   address: string;
   amount: number;
+  tags?: CustomHolderTag[] | undefined;
+};
+
+export type CustomHolderTag = {
+  /**
+   * Short form of tag, displayed beside address in holder table row
+   */
+  id: 'DBC' | string;
+  /**
+   * Long form of tag, displayed when user hovers on tag
+   */
+  name: string;
 };
 
 export type GetTopHoldersResponse =
