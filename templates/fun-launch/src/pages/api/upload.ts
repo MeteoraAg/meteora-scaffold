@@ -9,7 +9,7 @@ const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY as string;
 const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID as string;
 const R2_BUCKET = process.env.R2_BUCKET as string;
 const RPC_URL = process.env.RPC_URL as string;
-const POOL_CONFIG_KEY = process.env.NEXT_PUBLIC_POOL_CONFIG_KEY as string;
+const POOL_CONFIG_KEY = process.env.POOL_CONFIG_KEY as string;
 
 if (
   !R2_ACCESS_KEY_ID ||
