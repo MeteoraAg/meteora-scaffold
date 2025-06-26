@@ -7,8 +7,8 @@ A platform for launching tokens with customizable price curves.
 1. Clone the repository
 
 ```bash
-git clone https://github.com/jup-ag/fun-launch.git
-cd fun-launch
+git clone https://github.com/MeteoraAg/meteora-scaffold
+cd templates/fun-launch
 ```
 
 2. Install dependencies
