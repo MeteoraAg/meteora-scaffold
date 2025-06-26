@@ -14,7 +14,7 @@ cd templates/fun-launch
 2. Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. Set up environment variables
@@ -61,7 +61,7 @@ The pool config key is used to configure the bonding curve parameters. You'll ne
 4. Run the development server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ## Deployment
